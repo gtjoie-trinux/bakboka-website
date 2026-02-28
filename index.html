@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BAKBOKA — AI-Augmented Political Economy Analysis</title>
+  <meta name="description" content="Synthetic intelligence meets expert judgment. AI-powered forecasting, counterfactual analysis, and early warning for high-stakes policy decisions.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #ffffff;
+      --bg-warm: #faf8f6;
+      --text: #1a1a1a;
+      --muted: #555;
+      --muted-light: #999;
+      --accent: #e05040;
+      --accent-light: rgba(224, 80, 64, 0.08);
+      --card-bg: #f5f5f5;
+      --border: #e0e0e0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-weight: 400;
+      overflow-x: hidden;
+    }
+
+    /* --- NAV --- */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 0 3rem;
+      height: 56px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-weight: 700;
+      font-size: 0.8125rem;
+      letter-spacing: 0.18em;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.8125rem;
+      font-weight: 400;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+      width: 28px;
+      height: 28px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 1px;
+      transition: all 0.2s;
+    }
+
+    /* --- LAYOUT --- */
+    section {
+      padding: 8rem 3rem;
+      position: relative;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* --- HERO --- */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding-top: 56px;
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 56px;
+      left: 0;
+      right: 0;
+      height: 50%;
+      background: linear-gradient(180deg, var(--bg-warm) 0%, var(--bg) 100%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-content > * {
+      animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .hero-content > *:nth-child(1) { animation-delay: 0.1s; }
+    .hero-content > *:nth-child(2) { animation-delay: 0.25s; }
+    .hero-content > *:nth-child(3) { animation-delay: 0.35s; }
+    .hero-content > *:nth-child(4) { animation-delay: 0.5s; }
+
+    .wordmark {
+      font-size: clamp(2.5rem, 7vw, 4.5rem);
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      line-height: 1;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-accent {
+      width: 48px;
+      height: 3px;
+      background: var(--accent);
+      margin: 0 auto 1.5rem;
+      border-radius: 2px;
+    }
+
+    .tagline {
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      font-weight: 400;
+      color: var(--muted);
+      max-width: 380px;
+      margin: 0 auto 3rem;
+      line-height: 1.7;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 2rem;
+      border: 1.5px solid var(--text);
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.8125rem;
+      letter-spacing: 0.02em;
+      transition: all 0.25s;
+      border-radius: 2px;
+    }
+
+    .btn:hover {
+      background: var(--text);
+      color: var(--bg);
+    }
+
+    /* --- SECTION COMMON --- */
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 2rem;
+    }
+
+    .section-heading {
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 1.25rem;
+      letter-spacing: -0.02em;
+    }
+
+    .section-text {
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.8;
+      font-weight: 400;
+      max-width: 520px;
+    }
+
+    /* --- SERVICES --- */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      margin-top: 3.5rem;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--border);
+    }
+
+    .service {
+      padding: 2rem;
+      background: var(--bg);
+      position: relative;
+      transition: background 0.3s;
+    }
+
+    .service:hover {
+      background: var(--bg-warm);
+    }
+
+    .service-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      background: var(--accent-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      color: var(--accent);
+    }
+
+    .service h3 {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .service p {
+      font-size: 0.8125rem;
+      color: var(--muted);
+      line-height: 1.7;
+      font-weight: 400;
+    }
+
+    /* --- CLIENTS --- */
+    .clients-section {
+      background: var(--bg);
+    }
+
+    .client-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 2.5rem;
+    }
+
+    .client-pill {
+      padding: 0.6rem 1.4rem;
+      border: 1px solid var(--border);
+      font-size: 0.8125rem;
+      font-weight: 400;
+      color: var(--muted);
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .client-pill:hover {
+      background: var(--bg-warm);
+      color: var(--text);
+    }
+
+    /* --- EDGE --- */
+    .edge-section {
+      background: #2c2926;
+      color: var(--bg);
+      padding: 8rem 3rem;
+    }
+
+    .edge-section .section-label {
+      color: var(--accent);
+    }
+
+    .edge-section .section-heading {
+      color: #fff;
+    }
+
+    .edge-section .section-text {
+      color: rgba(255,255,255,0.65);
+    }
+
+    .edge-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3.5rem;
+    }
+
+    .edge-item {
+      padding: 2rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      transition: background 0.3s;
+    }
+
+    .edge-item:hover {
+      background: rgba(255,255,255,0.08);
+    }
+
+    .edge-number {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      opacity: 0.3;
+      margin-bottom: 0.75rem;
+      line-height: 1;
+    }
+
+    .edge-item h3 {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #fff;
+    }
+
+    .edge-item p {
+      font-size: 0.8125rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.7;
+      font-weight: 400;
+    }
+
+    /* --- MID CTA --- */
+    .mid-cta {
+      text-align: center;
+      padding: 4rem 3rem;
+    }
+
+    /* --- CONTACT --- */
+    .contact {
+      text-align: center;
+      background: var(--bg-warm);
+    }
+
+    .contact .section-heading {
+      max-width: 400px;
+      margin: 0 auto 1.25rem;
+    }
+
+    .contact .section-text {
+      margin: 0 auto 2.5rem;
+      text-align: center;
+    }
+
+    .contact-email {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 1.05rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      padding-bottom: 2px;
+      border-bottom: 1.5px solid transparent;
+      transition: border-color 0.2s;
+    }
+
+    .contact-email:hover {
+      border-bottom-color: var(--accent);
+    }
+
+    /* --- FOOTER --- */
+    footer {
+      padding: 3rem;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-links a {
+      font-size: 0.75rem;
+      color: var(--muted-light);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--text);
+    }
+
+    footer p {
+      font-size: 0.75rem;
+      color: var(--muted-light);
+      font-weight: 400;
+    }
+
+    /* --- ANIMATIONS --- */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.08s; }
+    .reveal-delay-2 { transition-delay: 0.16s; }
+    .reveal-delay-3 { transition-delay: 0.24s; }
+    .reveal-delay-4 { transition-delay: 0.32s; }
+    .reveal-delay-5 { transition-delay: 0.40s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero-content > * { animation: none; }
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* --- RESPONSIVE --- */
+    @media (max-width: 768px) {
+      section { padding: 5rem 1.5rem; }
+      nav { padding: 0 1.5rem; }
+      .nav-links { gap: 1.5rem; }
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .edge-grid { grid-template-columns: 1fr; }
+      .edge-section { padding: 5rem 1.5rem; }
+    }
+
+    @media (max-width: 640px) {
+      nav { padding: 0 1.25rem; }
+
+      .nav-toggle {
+        display: flex;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 56px;
+        left: 0;
+        right: 0;
+        background: #fff;
+        border-bottom: 1px solid var(--border);
+        flex-direction: column;
+        gap: 0;
+        padding: 0.5rem 0;
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-links li {
+        list-style: none;
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 0.75rem 1.5rem;
+        font-size: 0.875rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      section { padding: 4rem 1.25rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      .edge-section { padding: 4rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#" class="nav-logo">BAKBOKA</a>
+    <button class="nav-toggle" aria-label="Toggle navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#clients">Clients</a></li>
+      <li><a href="#edge">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="wordmark">BAKBOKA</h1>
+      <div class="hero-accent"></div>
+      <p class="tagline">AI-augmented forecasts for institutions.</p>
+      <a href="#contact" class="btn">Request a briefing</a>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="container">
+      <div class="reveal">
+        <p class="section-label">What We Do</p>
+        <h2 class="section-heading">Monitoring, scenarios, forecasts.</h2>
+        <p class="section-text">Synthetic experts and top human analysts, integrated into a single network. Every judgment cross-checked, calibrated, sharpened.</p>
+      </div>
+
+      <div class="services-grid">
+        <div class="service reveal reveal-delay-1">
+          <div class="service-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="10"/></svg>
+          </div>
+          <h3>Context Monitoring</h3>
+          <p>Always-on, cross-checked situation tracking in conflict-affected and politically volatile contexts.</p>
+        </div>
+        <div class="service reveal reveal-delay-2">
+          <div class="service-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <h3>Ongoing Forecasts</h3>
+          <p>Continuous human and machine forecasts. Calibrated and updated.</p>
+        </div>
+        <div class="service reveal reveal-delay-3">
+          <div class="service-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><line x1="8.12" y1="7.88" x2="15.88" y2="15.88"/></svg>
+          </div>
+          <h3>Stakeholder Mapping</h3>
+          <p>Mapping actors, alliances, and influence flows across political systems.</p>
+        </div>
+        <div class="service reveal reveal-delay-1">
+          <div class="service-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3>Negotiation Simulations</h3>
+          <p>Model the actors, test the strategies, anticipate the outcomes.</p>
+        </div>
+        <div class="service reveal reveal-delay-2">
+          <div class="service-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M12 22V8"/><path d="M21 3l-9 9"/><path d="M3 3l9 9"/></svg>
+          </div>
+          <h3>Counterfactuals &amp; Scenarios</h3>
+          <p>Alternative futures modeled. Decisions stress-tested.</p>
+        </div>
+        <div class="service reveal reveal-delay-3">
+          <div class="service-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+          </div>
+          <h3>Data Analysis &amp; Visualization</h3>
+          <p>Structured analysis and visualization for decision-ready reporting.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDGE -->
+  <section id="edge" class="edge-section">
+    <div class="container">
+      <div class="reveal">
+        <p class="section-label">Our Edge</p>
+        <h2 class="section-heading">A forecasting engine where AI and experts converge.</h2>
+        <p class="section-text">Purpose-built AI for forecasting and counterfactual analysis, cross-checked by a curated network of senior analysts.</p>
+      </div>
+
+      <div class="edge-grid">
+        <div class="edge-item reveal reveal-delay-1">
+          <div class="edge-number">01</div>
+          <h3>Synthetic Forecasters</h3>
+          <p>AI models built for counterfactual reasoning, scenario generation, and calibrated probability — running continuously.</p>
+        </div>
+        <div class="edge-item reveal reveal-delay-2">
+          <div class="edge-number">02</div>
+          <h3>Expert Network</h3>
+          <p>Analysts with proven forecasting records providing judgment, cross-checking, and the context that machines miss.</p>
+        </div>
+        <div class="edge-item reveal reveal-delay-3">
+          <div class="edge-number">03</div>
+          <h3>Field Access</h3>
+          <p>Local presence and access networks on the ground. Ground truth, not guesswork.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLIENTS -->
+  <section id="clients" class="clients-section">
+    <div class="container">
+      <div class="reveal">
+        <p class="section-label">Clients</p>
+        <h2 class="section-heading">Our clients.</h2>
+      </div>
+
+      <div class="client-row reveal">
+        <span class="client-pill">European Union</span>
+        <span class="client-pill">The World Bank</span>
+        <span class="client-pill">U.S. Institute of Peace</span>
+        <span class="client-pill">AFD</span>
+        <span class="client-pill">Chemonics</span>
+        <span class="client-pill">MPS</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="container reveal">
+      <p class="section-label">Contact</p>
+      <h2 class="section-heading">Start a conversation.</h2>
+      <p class="section-text">We work with institutional clients on strategic forecasting and political economy analysis.</p>
+      <a href="mailto:info@bakboka.com?subject=Briefing%20Request" class="btn" style="margin-top: 1.5rem;">Request a briefing</a>
+      <br>
+      <a href="mailto:info@bakboka.com" class="contact-email" style="margin-top: 1.5rem; display: inline-block;">info@bakboka.com</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="legal.html">Legal Notice</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+    <p>&copy; 2026 Bakboka AG &middot; Zurich, Switzerland</p>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Mobile nav toggle
+    const navToggle = document.querySelector('.nav-toggle');
+    const navLinks = document.querySelector('.nav-links');
+
+    navToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+    });
+
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+      });
+    });
+  </script>
+
+</body>
+</html>
